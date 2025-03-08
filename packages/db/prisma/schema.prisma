@@ -32,16 +32,14 @@ model User {
 
 model Submission{
   id String @id @default(cuid())
-  title String
-  description String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   code String
   fullCode String
   status STATUS @default(PENDING)
   testCases TestCase[]
-  memory Int
-  time Float
+  memory Int?
+  time Float?
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
@@ -78,14 +76,15 @@ model TestCase{
   id String @id @default(cuid())
   // input String
   // output String
-  memory Int
-  time Float
+  index Int
+  memory Int?
+  time Float?
   status TESTCASESTATUS @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
   submissionId String
-  judge0SubmissionId Int
+  judge0SubmissionId String @unique
 }
 
 model Language{

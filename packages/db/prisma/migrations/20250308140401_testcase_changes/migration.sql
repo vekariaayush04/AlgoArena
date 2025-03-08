@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "TestCase" ALTER COLUMN "memory" DROP NOT NULL,
+ALTER COLUMN "time" DROP NOT NULL;
