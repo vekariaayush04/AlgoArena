@@ -1,0 +1,10 @@
+{
+    "problemName": "min-element",
+    "functionName": "minElement",
+    "inputStructure": [
+        {"name": "arr", "type": "int[]"}
+    ],
+    "outputStructure": [
+        {"name": "ans", "type": "int"}
+    ]
+}

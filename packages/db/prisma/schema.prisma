@@ -58,7 +58,6 @@ model Problem{
   difficulty Difficulty @default(MEDIUM)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId String
   submissions Submission[]
   defaultCode DefaultCode[]
 }
@@ -70,7 +69,7 @@ model DefaultCode{
   updatedAt DateTime @updatedAt
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
   problemId String
-  language Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageId], references: [judge0Id], onDelete: Cascade)
   languageId Int  
   @@unique([problemId, languageId])
 }
@@ -92,7 +91,7 @@ model TestCase{
 model Language{
   id Int @id
   name String
-  judge0Id Int 
+  judge0Id Int @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   submissions Submission[]

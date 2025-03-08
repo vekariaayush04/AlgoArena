@@ -1,0 +1,11 @@
+{
+    "problemName": "max-element",
+    "functionName": "maxElement",
+    "inputStructure": [
+        {"name": "arr", "type": "int[]"}
+    ],
+    "outputStructure": [
+        {"name": "ans", "type": "int"}
+    ]
+}
+

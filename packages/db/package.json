@@ -1,6 +1,6 @@
 {
   "name": "@repo/db",
-  "module": "index.ts",
+  "module": "script.ts",
   "type": "module",
   "private": true,
   "exports":{
@@ -15,5 +15,8 @@
   },
   "dependencies": {
     "@prisma/client": "6.4.1"
+  },
+  "scripts": {
+    "db:init" : "ts-node script.ts"
   }
 }
