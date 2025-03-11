@@ -14,7 +14,7 @@ async function addDefaultCode(problem_slug : string, poblem_title : string) {
     })
 
     const code = await fs.readFile(`${PATH}/${problem_slug}/boilerplate/index.js`, "utf-8");
-    console.log(code);
+    // console.log(code);
     
 
     const defaultCode  = await prisma.defaultCode.create({
@@ -24,7 +24,7 @@ async function addDefaultCode(problem_slug : string, poblem_title : string) {
             code,
         }
     })
-    console.log(defaultCode);
+    // console.log(defaultCode);
     
 }
 

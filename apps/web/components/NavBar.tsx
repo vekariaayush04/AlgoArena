@@ -22,7 +22,7 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
       <div className="m-4 gap-6 flex justify-center items-center">
         {status === "LoggedIn" && (
           <div className="flex gap-6 text-[#94A3B8] text-md font-semibold">
-            <Link href="#"> Problems</Link>
+            <Link href="/problems"> Problems</Link>
             <Link href="#"> Contests</Link>
             <Link href="#"> LeaderBoard</Link>
           </div>

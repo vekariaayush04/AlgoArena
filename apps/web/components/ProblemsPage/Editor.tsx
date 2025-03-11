@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Editor, { Monaco } from "@monaco-editor/react";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Loader2, Play, X } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { submissionType, testCaseType } from "@/app/api/submissions/route";
@@ -39,6 +39,8 @@ const defineCustomTheme = (monaco: Monaco) => {
   monaco.editor.setTheme("custom-dark-theme");
 };
 
+type SubmissionStatus = "idle" | "PENDING" | "ACCEPTED" | "REJECTED";
+
 export default function CodeEditor({
   code,
   id,
@@ -46,6 +48,8 @@ export default function CodeEditor({
   code: string | undefined;
   id: string;
 }) {
+  const [submissionStatus, setSubmissionStatus] =
+    useState<SubmissionStatus>("idle");
   const [currcode, setcurrCode] = useState<string | undefined>(code);
   const [testCases, setTestCases] = useState<testCaseType[] | undefined>(
     undefined
@@ -73,6 +77,7 @@ export default function CodeEditor({
     const currTestCases = await res.data.testCases;
     setTestCases(currTestCases);
     setSubmission(currSubmission);
+    setSubmissionStatus(currSubmission.status);
     if (currSubmission.status === "ACCEPTED") {
       return;
     } else if (currSubmission.status === "REJECTED") {
@@ -89,6 +94,7 @@ export default function CodeEditor({
 
   // Access the code (e.g., on button click)
   const handleSubmit = async () => {
+    setSubmissionStatus("PENDING");
     const res = await axios.post("/api/submissions", {
       code: currcode,
       problem_id: id,
@@ -98,11 +104,12 @@ export default function CodeEditor({
     const currSubmission: submissionType = await res.data.submission;
     setTestCases(currTestCases);
     setSubmission(currSubmission);
+    setSubmissionStatus(currSubmission.status);
     poll({ id: currSubmission.id, tries: 10 });
   };
 
   return (
-    <div className="rounded-3xl h-full flex flex-col gap-10">
+    <div className="rounded-3xl h-full flex flex-col gap-7">
       <div className="flex items-center">
         <span className="text-white bg-slate-900 p-2 rounded-xl px-3 flex gap-2 font-semibold">
           {" "}
@@ -125,17 +132,100 @@ export default function CodeEditor({
         onChange={handleEditorChange}
       />
       <div className="flex justify-between">
-        <div>
+        {/* <div>
           {testCases !== undefined &&
             testCases.map((t, i) => (
               <div key={i} className="text-white">
                 {t.status}
               </div>
             ))}
+        </div> */}
+        <div className="w-full max-w-3xl p-6 bg-[#0F172A] rounded-lg text-white">
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex items-center">
+              {submissionStatus === "PENDING" ? (
+                <Loader2 className="h-5 w-5 mr-2 text-blue-400 animate-spin" />
+              ) : submissionStatus === "ACCEPTED" ? (
+                <Check className="h-5 w-5 mr-2 text-green-500" />
+              ) : submissionStatus === "REJECTED" ? (
+                <X className="h-5 w-5 mr-2 text-red-500" />
+              ) : null}
+
+              {submissionStatus === "PENDING" ? (
+                <span className="text-blue-400">Processing...</span>
+              ) : submissionStatus === "ACCEPTED" ? (
+                <span className="text-green-500">Accepted</span>
+              ) : submissionStatus === "REJECTED" ? (
+                <span className="text-red-500">Rejected</span>
+              ) : null}
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                className="bg-gray-900 border-gray-700 hover:bg-gray-800 text-gray-300"
+                onClick={handleSubmit}
+                disabled={submissionStatus === "PENDING"}
+              >
+                <Play className="h-4 w-4 mr-2" />
+                Run Code
+              </Button>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={handleSubmit}
+                disabled={submissionStatus === "PENDING"}
+              >
+                {submissionStatus === "PENDING" ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            {testCases !== undefined &&
+              testCases.map((testCase, i) => (
+                <div
+                  key={testCase.id}
+                  className={`
+              px-4 py-2 rounded-md border
+              ${
+                submissionStatus === "PENDING"
+                  ? "bg-gray-800 border-gray-700"
+                  : testCase.status === "AC"
+                    ? "bg-green-950 border-green-800 text-green-500"
+                    : testCase.status === "FAIL" ||
+                        "TLE" ||
+                        "MLE" ||
+                        "COMPILE_ERROR"
+                      ? "bg-red-950 border-red-800 text-red-500"
+                      : "bg-gray-800 border-gray-700"
+              }
+            `}
+                >
+                  {`Case ${i + 1}`}
+                  {submissionStatus === "PENDING" && (
+                    <Loader2 className="h-3 w-3 ml-2 inline animate-spin" />
+                  )}
+                  {testCase.status === "AC" &&
+                    submissionStatus !== "PENDING" && (
+                      <Check className="h-3 w-3 ml-2 inline text-green-500" />
+                    )}
+                  {(testCase.status === "FAIL" ||
+                    testCase.status === "TLE" ||
+                    testCase.status === "MLE" ||
+                    testCase.status === "COMPILE_ERROR") &&
+                    submissionStatus !== "PENDING" && (
+                      <X className="h-3 w-3 ml-2 inline text-red-500" />
+                    )}
+                </div>
+              ))}
+          </div>
         </div>
-        <Button className="p-5 text-md font-semibold" onClick={handleSubmit}>
-          Submit
-        </Button>
       </div>
     </div>
   );

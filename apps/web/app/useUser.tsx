@@ -23,7 +23,7 @@ export function useUser() {
   useEffect(() => {
     async function getUser() {
        const res = await axios.get('/api/user')
-       console.log(res);
+      //  console.log(res);
       setUser(res.data)
     }
     getUser()

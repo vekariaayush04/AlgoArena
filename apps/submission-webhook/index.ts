@@ -38,7 +38,6 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
     });
     //console.log(testCases);
 
-    await new Promise<void>((res , rej) => {setTimeout(() => {res()},10000)})
     // Find all the test cases for the submission
 
     const AllTestCases = await prisma.testCase.findMany({
@@ -57,7 +56,7 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
     if(pendingTestCases.length === 0) {
         let accepted = failedTestCases.length === 0;
         let status = accepted ? "ACCEPTED" : "REJECTED";
-        console.log(status === "ACCEPTED" ? "Accepted" : "Wrong Answer");
+        // console.log(status === "ACCEPTED" ? "Accepted" : "Wrong Answer");
         const res = await prisma.submission.update({
             where: {
                 id : testCase.submissionId
@@ -82,7 +81,7 @@ app.listen(3001, '0.0.0.0', () => {
 
 
 function getStatus( status : string) : string {
-    console.log(status);
+    // console.log(status);
     
     switch(status) {
         case "Accepted":
