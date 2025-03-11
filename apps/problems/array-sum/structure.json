@@ -1,0 +1,10 @@
+{
+    "problemName": "array-sum",
+    "functionName": "sum",
+    "inputStructure": [
+        {"name": "arr", "type": "int[]"}
+    ],
+    "outputStructure": [
+        {"name": "ans", "type": "int"}
+    ]
+}

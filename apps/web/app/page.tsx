@@ -1,43 +1,16 @@
-import { JSX } from "react";
-import { auth, signIn, signOut } from "../auth";
+import LandingPage from "@/components/LandingPage/LandingPage"
+import { getCurrentSession } from "./session"
+import Home from "@/components/HomePage/Home"
+import { redirect } from "next/navigation"
 
-export default async function Home() {
-  const session  = await auth()
-  if (!session || !session.user) {
-    return <SignIn />
-  }
-  return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome {session.user.email}</p>
-      <SignOut />
-    </div>
-  )
-}
+export default async function Page() {
+	const {session , user} = await getCurrentSession()
 
+	if(session){
+		redirect("/problems")
+	}
 
-export function SignIn() {
-  return (
-    <form
-      action={async () => {
-        "use server"
-        await signIn()
-      }}
-    >
-      <button type="submit">Sign in</button>
-    </form>
-  )
-}
-
-export function SignOut() {
-  return (
-    <form
-      action={async () => {
-        "use server"
-        await signOut()
-      }}
-    >
-      <button type="submit">Sign out</button>
-    </form>
-  )
+	return(
+		<LandingPage/>
+	)
 }

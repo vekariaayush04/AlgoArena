@@ -1,0 +1,21 @@
+import React from 'react'
+import { Problem } from '@/app/problems/page'
+import ProblemsDisplay from './ProblemsDisplay'
+
+const ProblemPage = ({problems} : {
+    problems : Problem[]
+}) => {
+  return (
+    <div className='bg-[#020817] text-white flex flex-col py-10 px-24'>
+        <div className='flex flex-col gap-3'>
+            <div className='text-4xl font-semibold'>Problems</div>
+            <div className='text-[#94A3B8] text-semibold text-md'>Sharpen Your Skills with Diverse Challenges</div>
+        </div>
+        <div>
+            <ProblemsDisplay problems={problems}/>
+        </div>
+    </div>
+  )
+}
+
+export default ProblemPage

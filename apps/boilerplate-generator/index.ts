@@ -1,9 +1,9 @@
 import  fs  from "fs/promises";
 
-const FILE_PATH = process.env.FILE_PATH || "./";
+const FILE_PATH = "../problems"
 
-export async function generateBoilerplate() {
-    let content = await fs.readFile(`${FILE_PATH}/structure.json`, "utf-8");
+export async function generateBoilerplate(slug : string) {
+    let content = await fs.readFile(`${FILE_PATH}/${slug}/structure.json`, "utf-8");
     let data = JSON.parse(content)
     let name = data.problemName;
     let fn = data.functionName;
@@ -16,17 +16,17 @@ export async function generateBoilerplate() {
 {
     //write your code here
 }` 
-let isExist = await fs.exists(`${FILE_PATH}/boilerplate`);
+let isExist = await fs.exists(`${FILE_PATH}/${slug}/boilerplate`);
     if (isExist) {
-        await fs.rmdir(`${FILE_PATH}/boilerplate`, { recursive: true });
+        await fs.rmdir(`${FILE_PATH}/${slug}/boilerplate`, { recursive: true });
     }
-    await fs.mkdir(`${FILE_PATH}/boilerplate`);
-    await fs.writeFile(`${FILE_PATH}/boilerplate/index.js`, boilerPlateCode);
+    await fs.mkdir(`${FILE_PATH}/${slug}/boilerplate`);
+    await fs.writeFile(`${FILE_PATH}/${slug}/boilerplate/index.js`, boilerPlateCode);
 }
 
 
-export async function generateBoilerplateFull() {
-    let content = await fs.readFile(`${FILE_PATH}/structure.json`, "utf-8");
+export async function generateBoilerplateFull(slug : string) {
+    let content = await fs.readFile(`${FILE_PATH}/${slug}/structure.json`, "utf-8");
     let data = JSON.parse(content)
     let name = data.problemName;
     let fn = data.functionName;
@@ -58,15 +58,15 @@ ${
     }
 const result = ${fn}(${fnArgs.join(", ")});
 console.log(result);`
-    let isExist = await fs.exists(`${FILE_PATH}/boilerplate-full`);
+    let isExist = await fs.exists(`${FILE_PATH}/${slug}/boilerplate-full`);
     if (isExist) {
-        await fs.rmdir(`${FILE_PATH}/boilerplate-full`, { recursive: true });
+        await fs.rmdir(`${FILE_PATH}/${slug}/boilerplate-full`, { recursive: true });
     }
 
-    await fs.mkdir(`${FILE_PATH}/boilerplate-full`);
-    await fs.writeFile(`${FILE_PATH}/boilerplate-full/index.js`, boilerPlateCode);
+    await fs.mkdir(`${FILE_PATH}/${slug}/boilerplate-full`);
+    await fs.writeFile(`${FILE_PATH}/${slug}/boilerplate-full/index.js`, boilerPlateCode);
 
 }
 
-generateBoilerplate();
-generateBoilerplateFull();
+generateBoilerplate(process.env.NAME!);
+generateBoilerplateFull(process.env.NAME!);

@@ -5,7 +5,14 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      // "@utils/*": ["./utils/*"],
+      // "@shared/*": ["../../packages/shared/*"], // For monorepo setup
+      // "@app/*": ["../../packages/app/*"], // For monorepo setup
+      // "@lib/*": ["../../packages/lib/*"] // For monorepo setup
+    }
   },
   "include": [
     "**/*.ts",

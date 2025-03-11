@@ -1,45 +1,44 @@
-// export { auth as middleware } from "./auth"
-
-// middleware.ts
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import NextAuth from "next-auth";
-import authConfig from "./auth.config";
 
-const { auth } = NextAuth(authConfig);
+import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  // Create a fake NextApiRequest and NextApiResponse
-  const req = {
-    url: request.url,
-    method: request.method,
-    headers: Object.fromEntries(request.headers.entries()),
-    cookies: Object.fromEntries(
-      request.cookies.getAll().map((cookie) => [cookie.name, cookie.value])
-    ),
-    query: Object.fromEntries(new URL(request.url).searchParams.entries()),
-  };
-
-  const res = {
-    setHeader: (name: string, value: string) => {
-      // Set headers on the NextResponse
-      return NextResponse.next().headers.set(name, value);
-    },
-    getHeader: (name: string) => {
-      // Get headers from the NextRequest
-      return request.headers.get(name);
-    },
-  };
-
-  // Call the auth function with the adapted request and response
-  const session = await auth();
-
-
-  // Continue with the request
-  return NextResponse.next();
-}
-
-
-export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+	if (request.method === "GET") {
+		const response = NextResponse.next();
+		const token = request.cookies.get("session")?.value ?? null;
+		if (token !== null) {
+			// Only extend cookie expiration on GET requests since we can be sure
+			// a new session wasn't set when handling the request.
+			response.cookies.set("session", token, {
+				path: "/",
+				maxAge: 60 * 60 * 24 * 30,
+				sameSite: "lax",
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production"
+			});
+		}
+		return response;
+	}
+	const originHeader = request.headers.get("Origin");
+	// NOTE: You may need to use `X-Forwarded-Host` instead
+	const hostHeader = request.headers.get("Host");
+	if (originHeader === null || hostHeader === null) {
+		return new NextResponse(null, {
+			status: 403
+		});
+	}
+	let origin: URL;
+	try {
+		origin = new URL(originHeader);
+	} catch {
+		return new NextResponse(null, {
+			status: 403
+		});
+	}
+	if (origin.host !== hostHeader) {
+		return new NextResponse(null, {
+			status: 403
+		});
+	}
+	return NextResponse.next();
 }
