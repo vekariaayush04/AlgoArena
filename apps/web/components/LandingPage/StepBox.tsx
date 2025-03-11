@@ -39,7 +39,7 @@ export const Step = ({
   };
   
   return (
-    <span className={`${colors[variant]} p-1 rounded-xl px-3`}>
+    <span className={`${colors[variant]} p-1.5 rounded-xl px-3`}>
       {children || data}
     </span>
   );

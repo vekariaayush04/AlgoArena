@@ -20,7 +20,7 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
             judge0SubmissionId: token
         }
     });
-
+    
     if (!testCase) {
         return res.status(404).send({msg : "Submission not found"});
     }
@@ -38,7 +38,7 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
     });
     //console.log(testCases);
 
-
+    await new Promise<void>((res , rej) => {setTimeout(() => {res()},10000)})
     // Find all the test cases for the submission
 
     const AllTestCases = await prisma.testCase.findMany({

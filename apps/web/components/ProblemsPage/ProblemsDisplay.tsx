@@ -94,7 +94,7 @@ export default function ProblemsDisplay({problems} : {problems : Problem[]}) {
             </TableHeader>
             <TableBody>
               {problems.map((problem) => (
-                <TableRow key={problem.id} className=" border-b-[#1a1f2e] hover:bg-[#1a1f2e] transition-colors" onClick={()=>{ router.push(`/problems/${problem.slug}`)}}>
+                <TableRow key={problem.id} className=" border-b-[#1a1f2e] hover:bg-[#1a1f2e] transition-colors" onClick={()=>{ router.push(`/problems/${problem.id}`)}}>
                   <TableCell className="font-medium text-white p-3">{problem.title}</TableCell>
                   <TableCell>
                     <Step
