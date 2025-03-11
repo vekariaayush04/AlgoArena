@@ -1,5 +1,5 @@
 "use client"
-import { Check, ChevronDown, ChevronLeft, ChevronRight, HelpCircle, Search } from "lucide-react"
+import { Check, ChevronDown, ChevronLeft, ChevronRight, HelpCircle, Search , CircleCheckBig } from "lucide-react"
 
 // import { Button } from "@/components/ui/button"
 // import { Input } from "@/components/ui/input"
@@ -106,7 +106,7 @@ export default function ProblemsDisplay({problems} : {problems : Problem[]}) {
                   </TableCell>
                   <TableCell><Step data={"120 pts"}></Step></TableCell>
                   <TableCell className="text-center">
-                    {problem.status === "completed" && <Check className="w-4 h-4 text-green-500 mx-auto" />}
+                    {problem.status === "completed" && <CircleCheckBig className="w-4 h-4 text-green-500 mx-auto" />}
                     {problem.status === "attempted" && <HelpCircle className="w-4 h-4 text-orange-500 mx-auto" />}
                     {(!problem.status || problem.status === "not-started") && <span className="text-gray-500">—</span>}
                   </TableCell>

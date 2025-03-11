@@ -1,4 +1,5 @@
 "use client";
+import { CircleCheckBig } from "lucide-react";
 import { useEffect, useState } from "react";
 import Editor, { Monaco } from "@monaco-editor/react";
 import { Check, ChevronDown, Loader2, Play, X } from "lucide-react";
@@ -123,10 +124,12 @@ export default function CodeEditor({
         theme="custom-dark-theme"
         beforeMount={defineCustomTheme} // Ensures theme is set before editor loads
         options={{
+          // readOnly: true,
+          // contextmenu : false,
           scrollBeyondLastLine: false,
           fontSize: 20,
           lineNumbers: "on",
-          minimap: { enabled: false },
+          minimap: { enabled: false }
         }}
         className="rounded-3xl h-96"
         onChange={handleEditorChange}
@@ -140,13 +143,13 @@ export default function CodeEditor({
               </div>
             ))}
         </div> */}
-        <div className="w-full max-w-3xl p-6 bg-[#0F172A] rounded-lg text-white">
-          <div className="flex justify-between items-center mb-2">
+        <div className="w-full max-w-3xl bg-[#020817] rounded-lg text-white border border-[#1E293B]">
+          <div className="flex justify-between items-center py-3 px-4">
             <div className="flex items-center">
               {submissionStatus === "PENDING" ? (
                 <Loader2 className="h-5 w-5 mr-2 text-blue-400 animate-spin" />
               ) : submissionStatus === "ACCEPTED" ? (
-                <Check className="h-5 w-5 mr-2 text-green-500" />
+                <CircleCheckBig className="h-5 w-5 mr-2 text-green-500" />
               ) : submissionStatus === "REJECTED" ? (
                 <X className="h-5 w-5 mr-2 text-red-500" />
               ) : null}
@@ -160,10 +163,10 @@ export default function CodeEditor({
               ) : null}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center h-10">
               <Button
                 variant="outline"
-                className="bg-gray-900 border-gray-700 hover:bg-gray-800 text-gray-300"
+                className="bg-[#020817] border-gray-700 hover:bg-[#020817] text-gray-300 hover:text-gray-300"
                 onClick={handleSubmit}
                 disabled={submissionStatus === "PENDING"}
               >
@@ -186,23 +189,24 @@ export default function CodeEditor({
               </Button>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2" >
             {testCases !== undefined &&
-              testCases.map((testCase, i) => (
+              (<div className="flex gap-5 p-5">
+                {testCases.map((testCase, i) => (
                 <div
                   key={testCase.id}
                   className={`
-              px-4 py-2 rounded-md border
+              px-3 py-3 rounded-md 
               ${
                 submissionStatus === "PENDING"
                   ? "bg-gray-800 border-gray-700"
                   : testCase.status === "AC"
-                    ? "bg-green-950 border-green-800 text-green-500"
+                    ? "bg-[#0F172A] text-green-500"
                     : testCase.status === "FAIL" ||
                         "TLE" ||
                         "MLE" ||
                         "COMPILE_ERROR"
-                      ? "bg-red-950 border-red-800 text-red-500"
+                      ? "bg-[bg-[#0F172A]] text-red-500"
                       : "bg-gray-800 border-gray-700"
               }
             `}
@@ -213,7 +217,7 @@ export default function CodeEditor({
                   )}
                   {testCase.status === "AC" &&
                     submissionStatus !== "PENDING" && (
-                      <Check className="h-3 w-3 ml-2 inline text-green-500" />
+                      <CircleCheckBig className="h-3 w-3 ml-2 inline text-green-500" />
                     )}
                   {(testCase.status === "FAIL" ||
                     testCase.status === "TLE" ||
@@ -224,6 +228,7 @@ export default function CodeEditor({
                     )}
                 </div>
               ))}
+              </div>)}
           </div>
         </div>
       </div>
