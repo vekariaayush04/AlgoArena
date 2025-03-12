@@ -1,7 +1,7 @@
 "use client";
 import { Moon, Sun } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "@/public/logoAlgo.png";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,14 @@ import ThemeToggleButton from "@/app/ThemeSwitcher";
 
 const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
   const router = useRouter();
+  const user = useUser();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user !== undefined && user !== null) {
+      setLoading(false);
+    }
+  },[loading,user])
   return (
     <div className="sticky top-0 left-0 right-0 flex justify-between bg-primary dark:bg-primary text-gray-200 border-b border-border dark:border-border p-2">
       <div className="flex pl-4 gap-3 items-center justify-center">
@@ -24,23 +32,25 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
         {status === "LoggedIn" && (
           <div className="flex gap-6 text-[#94A3B8] text-md font-semibold">
             <Link href="/problems"> Problems</Link>
-            <Link href="#"> Contests</Link>
+            <Link href="/contests"> Contests</Link>
             <Link href="#"> LeaderBoard</Link>
+            {!loading && (
+              <div>
+                <Link href="/profile">
+                  {" "}
+                  <Image src={user?.image!} alt="" width={30} height={30} className="rounded-full"></Image>
+                </Link>
+              </div>
+            )}
           </div>
         )}
         <ThemeToggleButton></ThemeToggleButton>
         {status === "LoggedOut" && (
           <div className="flex gap-2">
-            <Button
-            variant={"primary"}
-              onClick={() => router.push("/login")}
-            >
+            <Button variant={"primary"} onClick={() => router.push("/login")}>
               Login
             </Button>
-            <Button
-              variant={"blue"}
-              onClick={() => router.push("/signup")}
-            >
+            <Button variant={"blue"} onClick={() => router.push("/signup")}>
               Sign up now
             </Button>
           </div>

@@ -6,6 +6,7 @@ import { Check, ChevronDown, Loader2, Play, X } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { submissionType, testCaseType } from "@/app/api/submissions/route";
+import { updateStreaks } from "@/app/actions/streakUpdateAction";
 
 const defineCustomTheme = (monaco: Monaco) => {
   monaco.editor.defineTheme("custom-dark-theme", {
@@ -45,9 +46,11 @@ type SubmissionStatus = "idle" | "PENDING" | "ACCEPTED" | "REJECTED";
 export default function CodeEditor({
   code,
   id,
+  userId
 }: {
   code: string | undefined;
   id: string;
+  userId : string;
 }) {
   const [submissionStatus, setSubmissionStatus] =
     useState<SubmissionStatus>("idle");
@@ -82,6 +85,7 @@ export default function CodeEditor({
     setSubmission(currSubmission);
     setSubmissionStatus(currSubmission.status);
     if (currSubmission.status === "ACCEPTED") {
+      await updateStreaks({id : userId})
       return;
     } else if (currSubmission.status === "REJECTED") {
       return;

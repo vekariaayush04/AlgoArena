@@ -23,9 +23,11 @@ model User {
   image         String?
   sessions      Session[]
   role          Role            @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submissions Submission[]
+  currentStreak Int             @default(0)
+  maxStreak     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  submissions   Submission[]
 }
 
 model Submission{
