@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma, STATUS, TESTCASESTATUS } from "@repo/db/prisma";
 import { getProblem } from "./getCode";
-import { stdin } from "process";
 import axios from "axios";
 import { getCurrentSession } from "@/app/session";
 
@@ -23,10 +22,11 @@ export async function POST(req: NextRequest) {
     problem.slug,
     code as string
   );
+  
 
   // axios request to judge0
   const response = await axios.post(
-    "http://localhost:2358/submissions/batch?base64_encoded=false",
+    `${process.env.NEXT_PUBLIC_JUDGE_API_BASE_URL}/submissions/batch?base64_encoded=false`,
     {
       submissions: inputs.map((input, index) => {
         return {
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
           source_code: fullCode,
           stdin: input,
           expected_output: outputs[index],
-          callback_url: "http://host.docker.internal:3001/submission-callback",
+          callback_url: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/submission-callback`,
         };
       }),
     }
