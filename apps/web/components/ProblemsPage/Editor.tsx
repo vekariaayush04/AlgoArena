@@ -110,7 +110,7 @@ export default function CodeEditor({
   };
 
   return (
-    <div className="rounded-3xl h-full flex flex-col gap-7">
+    <div className="rounded-3xl h-full flex flex-col gap-3">
       <div className="flex items-center">
         <span className="text-white bg-slate-900 p-2 rounded-xl px-3 flex gap-2 font-semibold">
           {" "}
@@ -143,8 +143,8 @@ export default function CodeEditor({
               </div>
             ))}
         </div> */}
-        <div className="w-full max-w-3xl bg-[#020817] rounded-lg text-white border border-[#1E293B]">
-          <div className="flex justify-between items-center py-3 px-4">
+        <div className="w-full max-w-3xl bg-primary dark:bg-primary rounded-lg text-white border bborder-border dark:border-border">
+          <div className="flex justify-between items-center py-3 px-4 text-xl font-semibold">
             <div className="flex items-center">
               {submissionStatus === "PENDING" ? (
                 <Loader2 className="h-5 w-5 mr-2 text-blue-400 animate-spin" />
@@ -166,7 +166,7 @@ export default function CodeEditor({
             <div className="flex gap-2 items-center h-10">
               <Button
                 variant="outline"
-                className="bg-[#020817] border-gray-700 hover:bg-[#020817] text-gray-300 hover:text-gray-300"
+                className="bg-primary dark:bg-primary border-gray-700 hover:bg-primary hover:dark:bg-primary text-gray-300 hover:text-gray-300"
                 onClick={handleSubmit}
                 disabled={submissionStatus === "PENDING"}
               >
@@ -196,7 +196,7 @@ export default function CodeEditor({
                 <div
                   key={testCase.id}
                   className={`
-              px-3 py-3 rounded-md 
+              px-3.5 py-2 rounded-md font-semibold
               ${
                 submissionStatus === "PENDING"
                   ? "bg-gray-800 border-gray-700"
@@ -206,7 +206,7 @@ export default function CodeEditor({
                         "TLE" ||
                         "MLE" ||
                         "COMPILE_ERROR"
-                      ? "bg-[bg-[#0F172A]] text-red-500"
+                      ? "bg-[#0F172A] text-red-500"
                       : "bg-gray-800 border-gray-700"
               }
             `}
@@ -215,17 +215,7 @@ export default function CodeEditor({
                   {submissionStatus === "PENDING" && (
                     <Loader2 className="h-3 w-3 ml-2 inline animate-spin" />
                   )}
-                  {testCase.status === "AC" &&
-                    submissionStatus !== "PENDING" && (
-                      <CircleCheckBig className="h-3 w-3 ml-2 inline text-green-500" />
-                    )}
-                  {(testCase.status === "FAIL" ||
-                    testCase.status === "TLE" ||
-                    testCase.status === "MLE" ||
-                    testCase.status === "COMPILE_ERROR") &&
-                    submissionStatus !== "PENDING" && (
-                      <X className="h-3 w-3 ml-2 inline text-red-500" />
-                    )}
+
                 </div>
               ))}
               </div>)}

@@ -26,14 +26,14 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#020817] text-gray-200 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-primary dark:bg-primary text-gray-200 p-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center">
           <div className='flex justify-center'>
           <Image  src={logo} alt='' width={80} height={80}/>
           </div>
-          <h2 className="mt-6 text-2xl font-bold">Welcome Back</h2>
-          <p className="mt-2 text-md text-gray-400 text-wrap px-3">
+          <h2 className="mt-6 text-2xl font-bold text-content-primary">Welcome Back</h2>
+          <p className="mt-2 text-md text-content-secondary text-wrap px-3">
           Login to continue your coding journey and compete in challenges.
           </p>
         </div>

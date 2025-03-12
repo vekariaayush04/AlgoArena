@@ -68,7 +68,7 @@ const page = async () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#020817]">
+    <div className="min-h-screen bg-primary dark:bg-primary">
       <NavBar status="LoggedIn" />
       <ProblemPage problems={problemsWithStatus} />
     </div>

@@ -10,11 +10,11 @@ const StepBox = ({
   title: string;
 }) => {
   return (
-    <div className="col-span-1 flex flex-col gap-3 bg-[#64748B1A] rounded-xl p-5">
+    <div className="col-span-1 flex flex-col gap-3 bg-[#64748B1A] rounded-xl p-5 font-semibold">
       <div>
         <Step data={`Step ${num}`}></Step>
       </div>
-      <div className="text-white text-xl p-1">{title}</div>
+      <div className="text-content-primary text-xl p-1">{title}</div>
       <div className="text-[#94A3B8]">{desc}</div>
     </div>
   );

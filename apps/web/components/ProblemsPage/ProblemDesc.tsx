@@ -154,7 +154,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
             </TypedSyntaxHighlighter>
           ) : (
             <code
-              className="bg-[#1E293B] text-white dark:bg-gray-800 rounded-md flex p-4"
+              className="bg-border text-white dark:bg-border rounded-md flex p-4"
               {...props}
             >
               {children}
