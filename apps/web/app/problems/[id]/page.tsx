@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@repo/db/prisma";
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Footer from "@/components/Footer";
 import Submissions from "@/components/ProblemsPage/Submissions";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -36,6 +35,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <TabsList className="grid w-full grid-cols-2 bg-[#0F172A] text-[#94A3B8]">
               <TabsTrigger value="problem" className="data-[state=active]:bg-border data-[state=active]:dark:bg-border data-[state=active]:text-[#F8FAFC]">Problem</TabsTrigger>
               <TabsTrigger value="submissions" className="data-[state=active]:text-[#F8FAFC] data-[state=active]:bg-border data-[state=active]:dark:bg-border">Submissions</TabsTrigger>
+              
             </TabsList>
             <TabsContent value="problem" className="">
                 <div className="">
@@ -44,7 +44,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
               </TabsContent>
               <TabsContent value="submissions">
                 <div className="">
-                  <Submissions/>
+                  <Submissions p_id={p.id}/>
                 </div>
               </TabsContent>
           </Tabs>
@@ -53,7 +53,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <CodeEditor code={problem?.defaultCode[0]?.code} id={p.id} />
           </div>
         </div>
-        <Footer/>
+        {/* <Footer/> */}
       </div>
     </>
   );

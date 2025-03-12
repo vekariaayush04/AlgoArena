@@ -68,6 +68,8 @@ export default function CodeEditor({
   const poll = async ({ id, tries }: { id: string; tries: number }) => {
     if (tries === 0) {
       alert("Sorry");
+      setSubmissionStatus("REJECTED")
+      return
     }
 
     const res = await axios.post("/api/verify", {

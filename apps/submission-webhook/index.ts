@@ -11,8 +11,9 @@ app.use(express.json());
 app.put("/submission-callback", async (req : Request, res : Response) : Promise<any>=> {
     const body = req.body;
 
-    const { token , status } = body;
-
+    const { token , status , time , memory } = body;
+    // console.log(body);
+    
     // Find the submission in the database
 
     const testCase = await prisma.testCase.findUnique({
@@ -27,13 +28,16 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
 
     // Update the status of the submission
     const statusData = getStatus(status.description)
-
+    // console.log(status);
+    
     let testCases = await prisma.testCase.update({
         where: {
             judge0SubmissionId: token
         },
         data: {
-            status: statusData as any
+            status: statusData as any,
+            time : parseFloat(time),
+            memory
         }
     });
     //console.log(testCases);
@@ -50,19 +54,23 @@ app.put("/submission-callback", async (req : Request, res : Response) : Promise<
     
     const failedTestCases = AllTestCases.filter((testCase) => testCase.status !== "AC");
     const pendingTestCases = AllTestCases.filter((testCase) => testCase.status === "PENDING");
-    console.log(failedTestCases.length, pendingTestCases.length);
+    //console.log(failedTestCases.length, pendingTestCases.length);
     
 
     if(pendingTestCases.length === 0) {
         let accepted = failedTestCases.length === 0;
         let status = accepted ? "ACCEPTED" : "REJECTED";
         // console.log(status === "ACCEPTED" ? "Accepted" : "Wrong Answer");
+        let tTime = AllTestCases.reduce((a,t) => a + t.time!, 0)
+        let tMemory = AllTestCases.reduce((a,t) => a + t.memory! ,0)
         const res = await prisma.submission.update({
             where: {
                 id : testCase.submissionId
             },
             data: {
-                status : status as any
+                status : status as any,
+                time: tTime,
+                memory : tMemory
             }
 
     });
