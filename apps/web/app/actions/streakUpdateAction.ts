@@ -18,15 +18,13 @@ export async function updateStreaks({ id }: { id: string }) {
   if (!user) return;
 
   let newStreak = 1;
-
-  if (lastAcceptedSubmission) {
+  //only update when length is 2 if it is 1 that means its users first accepted submission so streak is 1 no need for further calculations :)
+  if (lastAcceptedSubmission && lastAcceptedSubmission.length !== 1) {
     const daysDiff = differenceInBusinessDays(
       new Date(),
       lastAcceptedSubmission[1]?.updatedAt!
     );
-    
-    console.log(lastAcceptedSubmission);
-    
+        
     if (daysDiff === 1) {
       newStreak = (user.currentStreak ?? 0) + 1; // Increment streak
     }

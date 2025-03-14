@@ -8,7 +8,7 @@ import Submissions from "@/components/ProblemsPage/Submissions";
 import { getCurrentSession } from "@/app/session";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const {user} =await getCurrentSession()
+  const { user } = await getCurrentSession();
   const p = await params;
   const problem = await prisma.problem.findUnique({
     where: {
@@ -18,17 +18,28 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       defaultCode: true,
     },
   });
+  const length = await prisma.submission.count({
+    where:{
+      problemId : p.id as string
+    }
+  })
   const submissions = await prisma.submission.findMany({
     where: {
       problemId: p.id as string,
+      status : "ACCEPTED"
+    },
+    orderBy: {
+      updatedAt: "desc",
     },
   });
+  
+  let code = problem?.defaultCode[0]?.code;
+  let isDone = false;
 
-  const isDone = submissions.reduce(
-    (acc, curr) => (curr.status === "ACCEPTED" ? true : acc),
-    false
-  );
-  console.log(isDone);
+  if (submissions.length > 0) {
+    isDone = true
+    code = submissions[0]?.code;
+  }
 
   return (
     <>
@@ -55,7 +66,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <ProblemComponent
                   problem={problem}
                   isDone={isDone}
-                  submissions={submissions.length}
+                  submissions={length}
                 />
               </div>
             </TabsContent>
@@ -67,7 +78,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           </Tabs>
 
           <div className="h-96 col-span-1">
-            <CodeEditor code={problem?.defaultCode[0]?.code} id={p.id} userId={user!.id}/>
+            <CodeEditor code={code} id={p.id} userId={user!.id} />
           </div>
         </div>
         {/* <Footer/> */}

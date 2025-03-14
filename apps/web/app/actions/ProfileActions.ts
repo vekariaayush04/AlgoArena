@@ -159,7 +159,6 @@ export async function getSubmissionsData(): Promise<SubmissionsData> {
     let submission = submissions[i];
     const month = getMonth(submission?.updatedAt!)
     const day = getDate(submission?.updatedAt!)
-    console.log(day);
     
     if (calendarData[month]) {
       calendarData[month].days[day] = calendarData[month].days[day]! + 1;
