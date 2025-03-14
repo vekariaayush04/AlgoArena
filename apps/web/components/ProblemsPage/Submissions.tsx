@@ -18,7 +18,7 @@ const Submissions = async ({ p_id }: { p_id: string }) => {
   return (
     <div className="max-h-[500px] overflow-scroll overflow-x-hidden py-2 px-2">
       <table className="w-full ">
-        <thead className="h-12 bg-[#0F172A] text-white">
+        <thead className="h-12 bg-secondary text-content-primary">
           <tr className="h-12">
             <th className="w-[50%] text-left pl-5">Status</th>
             <th>Language</th>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+// import { ChevronRight } from 'lucide-react';
 
 interface Submission {
   id: string;
@@ -15,17 +15,17 @@ const RecentSubmissions: React.FC<RecentSubmissionsProps> = ({
   submissions
 }) => {
   return (
-    <div className="bg-[#0A1022] rounded-lg p-4">
+    <div className="border-2 border-border rounded-lg p-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-medium">Recent Submissions</h2>
-        <a href="/submissions" className="text-blue-400 text-sm flex items-center hover:underline">
+        {/* <a href="/submissions" className="text-blue-400 text-sm flex items-center hover:underline">
           View all <ChevronRight size={16} />
-        </a>
+        </a> */}
       </div>
       
       <div className="space-y-2">
         {submissions.map((submission) => (
-          <div key={submission.id} className="bg-[#131A2C] rounded-lg p-3 flex justify-between items-center">
+          <div key={submission.id} className="bg-secondary rounded-lg p-3 flex justify-between items-center">
             <a href={`/problem/${submission.id}`} className="hover:text-blue-400">
               {submission.problemName}
             </a>

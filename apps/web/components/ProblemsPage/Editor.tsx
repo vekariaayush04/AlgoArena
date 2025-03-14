@@ -7,8 +7,9 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { submissionType, testCaseType } from "@/app/api/submissions/route";
 import { updateStreaks } from "@/app/actions/streakUpdateAction";
+import { useTheme } from "next-themes";
 
-const defineCustomTheme = (monaco: Monaco) => {
+const defineThemes  = (monaco: Monaco) => {
   monaco.editor.defineTheme("custom-dark-theme", {
     base: "vs-dark",
     inherit: true,
@@ -37,8 +38,40 @@ const defineCustomTheme = (monaco: Monaco) => {
     },
   });
 
+  // Define both light and dark themes
+
+  
+  // Define a custom light theme
+  monaco.editor.defineTheme("custom-light-theme", {
+    base: "vs",
+    inherit: true,
+    rules: [
+      { token: "keyword", foreground: "#D73A49" }, // Dark red for keywords
+      { token: "variable", foreground: "#0366D6" }, // Blue for variables
+      { token: "number", foreground: "#005CC5" }, // Darker blue for numbers
+      { token: "delimiter", foreground: "#24292E" }, // Dark gray for delimiters
+      { token: "operator", foreground: "#D73A49" }, // Red for operators
+      { token: "identifier", foreground: "#005CC5" }, // Blue for function names
+      { token: "type", foreground: "#22863A" }, // Green for types
+      { token: "parameter.variable", foreground: "#E36209" }, // Orange for parameters
+      { token: "string", foreground: "#032F62" }, // Navy for strings
+      { token: "comment", foreground: "#6A737D" }, // Gray for comments
+    ],
+    colors: {
+      "editor.background": "#FFFFFF",
+      "editor.foreground": "#24292E",
+      "editorLineNumber.foreground": "#6A737D",
+      "editor.lineHighlightBackground": "#F1F8FF",
+      "editorCursor.foreground": "#24292E",
+      "editor.selectionBackground": "#C8E1FF",
+      "editor.selectionHighlightBackground": "#C8E1FF99",
+      "editorIndentGuide.background": "#EAF2F8",
+      "editorIndentGuide.activeBackground": "#C8E1FF",
+    },
+  });
+
   // Apply the theme
-  monaco.editor.setTheme("custom-dark-theme");
+  // monaco.editor.setTheme("custom-dark-theme");
 };
 
 type SubmissionStatus = "idle" | "PENDING" | "ACCEPTED" | "REJECTED";
@@ -58,9 +91,22 @@ export default function CodeEditor({
   const [testCases, setTestCases] = useState<testCaseType[] | undefined>(
     undefined
   );
+  const [theme , setTheme] = useState<string>()
   const [submission, setSubmission] = useState<submissionType | undefined>(
     undefined
   );
+  const { resolvedTheme}  = useTheme()
+  const {  refreshKey } = useThemeRefresh()
+
+  const handleEditorBeforeMount = (monaco: Monaco) => {
+    defineThemes(monaco);
+    
+    // Set the theme based on the resolved theme
+    const editorTheme = resolvedTheme === 'dark' ? 'custom-dark-theme' : 'custom-light-theme';
+    monaco.editor.setTheme(editorTheme);
+    setTheme(editorTheme)
+  };
+
   // Handle code changes
   const handleEditorChange = (value: string | undefined) => {
     if (value !== undefined) {
@@ -118,28 +164,29 @@ export default function CodeEditor({
   return (
     <div className="rounded-3xl h-full flex flex-col gap-3">
       <div className="flex items-center">
-        <span className="text-white bg-slate-900 p-2 rounded-xl px-3 flex gap-2 font-semibold">
+        <span className="text-content-secondary bg-secondary p-2 rounded-xl px-3 flex gap-2 font-semibold">
           {" "}
           Javascript <ChevronDown />
         </span>
       </div>
+      <div className="rounded-3xl">
       <Editor
+        key={refreshKey}
         defaultLanguage="javascript"
         defaultValue={code}
         value={code}
-        theme="custom-dark-theme"
-        beforeMount={defineCustomTheme} // Ensures theme is set before editor loads
+        theme={theme}
+        beforeMount={handleEditorBeforeMount}
         options={{
-          // readOnly: true,
-          // contextmenu : false,
           scrollBeyondLastLine: false,
-          fontSize: 20,
+          fontSize: 16,
           lineNumbers: "on",
           minimap: { enabled: false }
         }}
-        className="rounded-3xl h-96"
+        className="rounded-3xl min-h-96 border-2 p-4 [&>.monaco-editor]:rounded-md"
         onChange={handleEditorChange}
       />
+      </div>
       <div className="flex justify-between">
         {/* <div>
           {testCases !== undefined &&
@@ -202,12 +249,12 @@ export default function CodeEditor({
                 <div
                   key={testCase.id}
                   className={`
-              px-3.5 py-2 rounded-md font-semibold
+              px-3.5 py-2 rounded-md font-semibold text-content-secondary
               ${
                 submissionStatus === "PENDING"
-                  ? "bg-gray-800 border-gray-700"
+                  ? "bg-secondary border-gray-700"
                   : testCase.status === "AC"
-                    ? "bg-[#0F172A] text-green-500"
+                    ? "bg-secondary text-green-500"
                     : testCase.status === "FAIL" ||
                         "TLE" ||
                         "MLE" ||
@@ -230,4 +277,17 @@ export default function CodeEditor({
       </div>
     </div>
   );
+}
+
+
+function useThemeRefresh() {
+  const { theme } = useTheme()
+  const [refreshKey, setRefreshKey] = useState(0)
+  
+  useEffect(() => {
+    // Increment the key when theme changes to force a re-render
+    setRefreshKey(prev => prev + 1)
+  }, [theme])
+  
+  return { theme, refreshKey }
 }

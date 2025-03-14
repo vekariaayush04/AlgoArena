@@ -82,10 +82,10 @@ export default function ProblemsDisplay({problems} : {problems : Problem[]}) {
         </div> */}
 
         {/* Table */}
-        <div className="rounded-md border border-[#1a1f2e] overflow-hidden">
+        <div className="rounded-md border-2 border-border overflow-hidden">
           <Table className="border-collapse">
-            <TableHeader className="bg-[#0F172A]">
-              <TableRow className="border-b-[#1a1f2e] hover:bg-transparent">
+            <TableHeader className="bg-secondary">
+              <TableRow className=" hover:bg-transparent">
                 <TableHead className="text-gray-400 font-medium">Name</TableHead>
                 <TableHead className="text-gray-400 font-medium">Difficulty</TableHead>
                 <TableHead className="text-gray-400 font-medium">Points</TableHead>
@@ -94,8 +94,8 @@ export default function ProblemsDisplay({problems} : {problems : Problem[]}) {
             </TableHeader>
             <TableBody>
               {problems.map((problem) => (
-                <TableRow key={problem.id} className=" border-b-[#1a1f2e] hover:bg-[#1a1f2e] transition-colors" onClick={()=>{ router.push(`/problems/${problem.id}`)}}>
-                  <TableCell className="font-medium text-white p-3">{problem.title}</TableCell>
+                <TableRow key={problem.id} className="hover:bg-primary border-y-2 cursor-pointer" onClick={()=>{ router.push(`/problems/${problem.id}`)}}>
+                  <TableCell className="font-medium text-content-secondary p-3 ">{problem.title}</TableCell>
                   <TableCell>
                     <Step
                       data={problem.difficulty}

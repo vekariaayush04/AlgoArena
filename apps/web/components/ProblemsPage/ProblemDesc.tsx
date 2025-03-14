@@ -29,7 +29,7 @@ export const ProblemComponent: React.FC<{ problem: any; isDone: boolean , submis
   submissions
 }) => {
   return (
-    <div className="px-6 py-3 bg-slate-900 rounded-lg text-slate-100 relative">
+    <div className="px-6 py-3 bg-primary rounded-lg text-content-primary relative border-2">
       <div className="flex justify-between mt-2">
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <Code2 className="text-blue-600"></Code2>
@@ -57,21 +57,21 @@ export const ProblemComponent: React.FC<{ problem: any; isDone: boolean , submis
         </pre>
       </div>
 
-      <div className="mt-6 pt-4 border-t border-slate-700">
+      <div className="mt-6 pt-4 border-t-2 border-border">
         <h2 className="text-lg font-semibold mb-2">Constraints</h2>
-        <ul className="list-disc list-inside space-y-1 text-slate-300">
+        <ul className="list-disc list-inside space-y-1 text-content-primary">
           <li>1 ≤ arr.length ≤ 10⁴</li>
           <li>-10⁹ ≤ arr[i] ≤ 10⁹</li>
         </ul>
       </div>
 
-      <div className="mt-6 pt-4 border-t border-slate-700 mb-4">
+      <div className="mt-6 pt-4 border-t-2 border-border mb-4">
         <h2 className="text-lg font-semibold mb-4">Related Topics</h2>
         <div className="flex gap-2">
           {["Array", "Two Pointers"].map((topic) => (
             <span
               key={topic}
-              className="px-3 py-1 bg-slate-800 rounded-full text-sm text-slate-300"
+              className="px-3 py-1 bg-secondary rounded-full text-sm text-content-primary"
             >
               {topic}
             </span>
@@ -154,7 +154,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
             </TypedSyntaxHighlighter>
           ) : (
             <code
-              className="bg-border text-white dark:bg-border rounded-md flex p-4"
+              className="bg-border text-content-primary dark:bg-border rounded-md flex p-4"
               {...props}
             >
               {children}
@@ -168,7 +168,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         ),
         th: ({ node, ...props }) => (
           <th
-            className="px-4 py-2 text-left bg-gray-100 dark:bg-gray-800 border"
+            className="px-4 py-2 text-left bg-[#E2E8F0] dark:bg-gray-800 border"
             {...props}
           />
         ),

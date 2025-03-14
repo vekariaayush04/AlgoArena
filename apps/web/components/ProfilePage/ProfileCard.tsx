@@ -17,7 +17,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   languages,
 }) => {
   return (
-    <div className="bg-[#0A1022] rounded-lg p-4 flex flex-col gap-3 items-center">
+    <div className="bg-secondary rounded-lg p-4 flex flex-col gap-3 items-center">
       <div className="w-full flex gap-2">
         <img
           src={profileImage}

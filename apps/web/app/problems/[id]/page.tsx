@@ -47,16 +47,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         <NavBar status="LoggedIn" />
         <div className=" bg-primary dark:bg-primary grid grid-cols-2 p-5 gap-20">
           <Tabs defaultValue="problem">
-            <TabsList className="grid w-full grid-cols-2 bg-[#0F172A] text-[#94A3B8]">
+            <TabsList className="grid w-full grid-cols-2 text-content-primary bg-primary">
               <TabsTrigger
                 value="problem"
-                className="data-[state=active]:bg-border data-[state=active]:dark:bg-border data-[state=active]:text-[#F8FAFC]"
+                className="data-[state=active]:bg-border data-[state=active]:dark:bg-border data-[state=active]:text-content-primary"
               >
                 Problem
               </TabsTrigger>
               <TabsTrigger
                 value="submissions"
-                className="data-[state=active]:text-[#F8FAFC] data-[state=active]:bg-border data-[state=active]:dark:bg-border"
+                  className="data-[state=active]:bg-border data-[state=active]:dark:bg-border data-[state=active]:text-content-primary "
               >
                 Submissions
               </TabsTrigger>

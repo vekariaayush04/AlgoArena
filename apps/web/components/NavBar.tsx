@@ -20,7 +20,7 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
     }
   },[loading,user])
   return (
-    <div className="sticky top-0 left-0 right-0 flex justify-between bg-primary dark:bg-primary text-gray-200 border-b border-border dark:border-border p-2">
+    <div className="sticky top-0 left-0 right-0 flex justify-between bg-primary dark:bg-primary text-gray-200 border-b border-border dark:border-border p-2 z-10">
       <div className="flex pl-4 gap-3 items-center justify-center">
         <Image src={logo} alt="" width={40} height={40} />
         <div className="font-semibold">
@@ -30,15 +30,15 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
       </div>
       <div className=" gap-6 flex justify-center items-center">
         {status === "LoggedIn" && (
-          <div className="flex gap-6 text-[#94A3B8] text-md font-semibold">
+          <div className="flex gap-6 text-[#94A3B8] text-md font-semibold items-center">
             <Link href="/problems"> Problems</Link>
-            <Link href="/contests"> Contests</Link>
-            <Link href="#"> LeaderBoard</Link>
+            {/* <Link href="/contests"> Contests</Link>
+            <Link href="#"> LeaderBoard</Link> */}
             {!loading && (
-              <div>
-                <Link href="/profile">
+              <div className="bg-secondary rounded-full p-1">
+                <Link href="/profile" className="">
                   {" "}
-                  <Image src={user?.image!} alt="" width={30} height={30} className="rounded-full"></Image>
+                  <Image src={user?.image!} alt="" width={35} height={35} className="rounded-full border-2"></Image>
                 </Link>
               </div>
             )}
