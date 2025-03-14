@@ -1,0 +1,11 @@
+{
+    "problemName": "search-insert-position",
+    "functionName": "SearchInsertPosition",
+    "inputStructure": [
+      {"name": "nums", "type": "int[]"},
+      {"name": "target", "type": "int"}
+    ],
+    "outputStructure": [
+      {"name": "ans", "type": "int"}
+    ]
+  }
