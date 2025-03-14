@@ -25,20 +25,44 @@ export async function POST(req: NextRequest) {
   
 
   // axios request to judge0
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_JUDGE_API_BASE_URL}/submissions/batch?base64_encoded=false`,
-    {
-      submissions: inputs.map((input, index) => {
-        return {
-          language_id: 63,
-          source_code: fullCode,
-          stdin: input,
-          expected_output: outputs[index],
-          callback_url: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/submission-callback`,
-        };
-      }),
+  // const response = await axios.post(
+  //   `${process.env.NEXT_PUBLIC_JUDGE_API_BASE_URL}/submissions/batch?base64_encoded=false`,
+  //   {
+  //     submissions: inputs.map((input, index) => {
+  //       return {
+  //         language_id: 63,
+  //         source_code: fullCode,
+  //         stdin: input,
+  //         expected_output: outputs[index],
+  //         callback_url: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/submission-callback`,
+  //       };
+  //     }),
+  //   }
+  // );
+
+  const options = {
+    method: 'POST',
+    url: `${process.env.NEXT_PUBLIC_JUDGE_API_BASE_URL}/submissions/batch`,
+    params: {
+      base64_encoded: 'false'
+    },
+    headers: {
+      'x-rapidapi-key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
+      'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+      'Content-Type': 'application/json'
+    },
+    data: {
+      submissions: inputs.map((input, index) => ({
+        language_id: 63,
+        source_code: fullCode,
+        stdin: input,
+        expected_output: outputs[index],
+        callback_url: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/submission-callback`
+      }))
     }
-  );
+  };
+
+  const response = await axios.request(options);
 
   //create submission
 

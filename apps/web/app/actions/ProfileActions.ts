@@ -116,7 +116,7 @@ export async function getSubmissionsData(): Promise<SubmissionsData> {
     lastAcceptedSubmission?.updatedAt!
   );
   
-  if(daysDiff >= 1){
+  if(daysDiff > 1){
     await prisma.user.update({
         where:{
             id: user?.id
