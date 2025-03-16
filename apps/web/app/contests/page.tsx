@@ -5,11 +5,13 @@ import { prisma } from "@repo/db/prisma";
 import ContestBanner, {
   ContestBannerProps,
 } from "@/components/ContestPage/ContestBanner";
-
+import { redirect } from "next/navigation";
 
 const page = async () => {
   const { user } = await getCurrentSession();
-
+  if (user === undefined || user === null) {
+    redirect("/");
+  }
   const contest = await prisma.contest.findMany({
     orderBy: {
       startDate: "desc",
@@ -25,17 +27,20 @@ const page = async () => {
       });
 
       const participations = await prisma.contestParticipation.findMany({
-        where:{
-          userId : user?.id
-        }
-      })
+        where: {
+          userId: user?.id,
+        },
+      });
 
-      const isRegistered = participations.reduce((acc,p) => p.contestId === c.id ? true : acc , false)
-      
+      const isRegistered = participations.reduce(
+        (acc, p) => (p.contestId === c.id ? true : acc),
+        false
+      );
+
       return {
         contest: c,
         registered,
-        isRegistered
+        isRegistered,
       };
     })
   );
@@ -58,15 +63,15 @@ const page = async () => {
             Featured Contest
           </div>
           <div className="flex flex-col gap-3">
-          {contestData.map((c, i) => (
-            <ContestBanner
-              key={i}
-              contest={c.contest}
-              registered={c.registered}
-              userId={user?.id!}
-              isRegistered={c.isRegistered}
-            ></ContestBanner>
-          ))}
+            {contestData.map((c, i) => (
+              <ContestBanner
+                key={i}
+                contest={c.contest}
+                registered={c.registered}
+                userId={user?.id!}
+                isRegistered={c.isRegistered}
+              ></ContestBanner>
+            ))}
           </div>
         </div>
       </div>

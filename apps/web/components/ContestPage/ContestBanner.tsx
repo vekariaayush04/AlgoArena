@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import img from "@/public/Featured Card Image.svg";
+import lightImg from "@/public/lightBgBanner.svg"
 import { ContestVisibility } from "@repo/db/prisma";
 import { registerUser, unregisterUser } from "@/app/actions/ContestActions";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,8 +17,9 @@ import {
   isFuture,
 } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 
-type Contest = {
+export type Contest = {
   id: string;
   startDate: Date;
   endDate: Date;
@@ -28,6 +30,7 @@ type Contest = {
   duration: number;
   visibility: ContestVisibility;
 } | null;
+
 
 export type ContestBannerProps = {
   contest: Contest;
@@ -41,6 +44,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
   userId,
   isRegistered,
 }) => {
+  const { resolvedTheme} = useTheme()
   const [status, setStatus] = useState<Status>(null);
   const [d, setD] = useState(0);
   const [h, setH] = useState(0);
@@ -193,7 +197,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
 
       </div>
       <div className="pt-10 pr-16">
-        <Image src={img} alt=""></Image>
+        {resolvedTheme === "dark" ? <Image src={img} alt=""></Image> : <Image src={lightImg} alt=""></Image>}
       </div>
     </div>
   );

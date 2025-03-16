@@ -5,6 +5,7 @@ import { ProblemComponent } from "@/components/ProblemsPage/ProblemDesc";
 import Submissions from "@/components/ProblemsPage/Submissions";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { prisma } from "@repo/db/prisma";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async ({
@@ -13,6 +14,9 @@ const page = async ({
   params: Promise<{ id: string; contestId: string , contestProblemId : string }>;
 }) => {
   const { user } = await getCurrentSession();
+  if (user === undefined || user === null) {
+      redirect("/");
+    }
   const p = await params;
   console.log(p);
   

@@ -7,7 +7,9 @@ import React from "react";
 
 const Page = async () => {
   const { user } = await getCurrentSession();
-
+  if (user === undefined || user === null) {
+    redirect("/");
+  }
   const problems = await prisma.problem.findMany({});
 
   return (

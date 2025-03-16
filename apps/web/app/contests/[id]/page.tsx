@@ -1,5 +1,9 @@
 import { getCurrentSession } from "@/app/session";
-import ContestProblemsDisplay, { ContestProblem } from "@/components/ContestPage/ContestProblemDisplay";
+import ContestDetails from "@/components/ContestPage/ContestDetails";
+import ContestProblemsDisplay, {
+  ContestProblem,
+} from "@/components/ContestPage/ContestProblemDisplay";
+import ContestSmallBanner from "@/components/ContestPage/ContestSmallBanner";
 import NavBar from "@/components/NavBar";
 import { prisma } from "@repo/db/prisma";
 import { redirect } from "next/navigation";
@@ -7,7 +11,7 @@ import { redirect } from "next/navigation";
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const param = await params;
   const { user } = await getCurrentSession();
-  if (user === undefined) {
+  if (user === undefined || user === null) {
     redirect("/");
   }
 
@@ -26,46 +30,48 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     where: {
       contestId: param.id,
     },
-    include : {
-      problem : true
-    }
+    include: {
+      problem: true,
+    },
   });
 
   const submissions = await prisma.submission.findMany({
     where: {
       userId: user?.id,
-      contestId : param.id
-    }
+      contestId: param.id,
+    },
   });
-  // console.log(submissions);
-  
-  // Get user submissions if available
-  //const submissions: Submission[] = userWithSubmissions?.submissions || [];
 
-  // Process problems to add status
   const problemsWithStatus: ContestProblem[] = problems.map((problem) => {
-    // Find all submissions for this problem
     const problemSubmissions = submissions.filter(
       (sub) => sub.problemId === problem.problem.id
     );
     console.log(problemSubmissions);
-    
+
     let status: "completed" | "attempted" | "not-started" = "not-started";
 
-    // Check if any submission was accepted
     if (problemSubmissions.some((sub) => sub.status === "ACCEPTED")) {
       status = "completed";
-    }
-    // Check if there were attempts but none accepted
-    else if (problemSubmissions.length > 0) {
+    } else if (problemSubmissions.length > 0) {
       status = "attempted";
     }
-    // Return problem with added status
     return {
       ...problem,
       status,
-      name : problem.problem.title
+      name: problem.problem.title,
     };
+  });
+
+  const c = await prisma.contest.findUnique({
+    where: {
+      id: param.id,
+    },
+  });
+
+  const registered = await prisma.contestParticipation.count({
+    where: {
+      contestId: param.id,
+    },
   });
 
   if (!isRegistered) {
@@ -75,7 +81,18 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="">
       <NavBar status="LoggedIn" />
-      <ContestProblemsDisplay problems={problemsWithStatus}></ContestProblemsDisplay>
+      <div className="flex flex-col px-24 py-10 gap-5">
+        <ContestSmallBanner
+          contest={c}
+          registered={registered}
+        ></ContestSmallBanner>
+        <ContestDetails totalProblems={problems.length} duration={c?.duration!} StartDate={c?.startDate!}></ContestDetails>
+       <div className="grid grid-cols-10">
+       <div className="col-span-7"><ContestProblemsDisplay
+          problems={problemsWithStatus}
+        ></ContestProblemsDisplay></div>
+       </div>
+      </div>
     </div>
   );
 };
