@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,105 +7,150 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
+  id                String                  @id @default(cuid())
+  googleId          String                  @unique
+  name              String
+  email             String                  @unique
+  emailVerified     DateTime?
+  image             String?
+  sessions          Session[]
+  role              Role                    @default(USER)
+  currentStreak     Int                     @default(0)
+  maxStreak         Int                     @default(0)
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  submissions       Submission[]
+  contestParticipations ContestParticipation[]
+}
+
+model Submission {
   id            String          @id @default(cuid())
-  googleId      String          @unique
-  name          String
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  sessions      Session[]
-  role          Role            @default(USER)
-  currentStreak Int             @default(0)
-  maxStreak     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  code          String
+  fullCode      String
+  status        STATUS          @default(PENDING)
+  testCases     TestCase[]
+  memory        Int?
+  time          Float?
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  problem       Problem         @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId     String
+  language      Language        @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  languageId    Int
+  contest       Contest?        @relation(fields: [contestId], references: [id])
+  contestId     String?         
+  contestProblem ContestProblem? @relation(fields: [contestProblemId], references: [id])
+  contestProblemId String?
+}
+
+model Problem {
+  id            String          @id @default(cuid())
+  title         String
+  description   String
+  slug          String
+  difficulty    Difficulty      @default(MEDIUM)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   submissions   Submission[]
+  defaultCode   DefaultCode[]
+  contestProblems ContestProblem[]
 }
 
-model Submission{
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  code String
-  fullCode String
-  status STATUS @default(PENDING)
-  testCases TestCase[]
-  memory Int?
-  time Float?
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-  problemId String
-  language Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
-  languageId Int
-}
-
-model Problem{
-  id String @id @default(cuid())
-  title String
-  description String
-  slug String
-  difficulty Difficulty @default(MEDIUM)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submissions Submission[]
-  defaultCode DefaultCode[]
-}
-
-model DefaultCode{
-  id String @id @default(cuid())
-  code String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
-  problemId String
-  language Language @relation(fields: [languageId], references: [judge0Id], onDelete: Cascade)
-  languageId Int  
+model DefaultCode {
+  id            String          @id @default(cuid())
+  code          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  problem       Problem         @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  problemId     String
+  language      Language        @relation(fields: [languageId], references: [judge0Id], onDelete: Cascade)
+  languageId    Int  
   @@unique([problemId, languageId])
 }
 
-model TestCase{
-  id String @id @default(cuid())
-  // input String
-  // output String
-  index Int
-  memory Int?
-  time Float?
-  status TESTCASESTATUS @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  submissionId String
-  judge0SubmissionId String @unique
+model TestCase {
+  id                String          @id @default(cuid())
+  index             Int
+  memory            Int?
+  time              Float?
+  status            TESTCASESTATUS  @default(PENDING)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  submission        Submission      @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submissionId      String
+  judge0SubmissionId String         @unique
 }
 
-model Language{
-  id Int @id
-  name String
-  judge0Id Int @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submissions Submission[]
-  defaultCodes DefaultCode[]
+model Language {
+  id            Int             @id
+  name          String
+  judge0Id      Int             @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  submissions   Submission[]
+  defaultCodes  DefaultCode[]
 }
 
 model Session {
   id        String   @id
   userId    String
   expiresAt DateTime
-
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
- 
+
+model Contest {
+  id              String            @id @default(cuid())
+  name            String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime
+  duration        Int               
+  visibility      ContestVisibility @default(PUBLIC)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  submissions     Submission[]
+  contestProblems ContestProblem[]
+  participants    ContestParticipation[]
+}
+
+model ContestProblem {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  points         Int          
+  problem        Problem      @relation(fields: [problemId], references: [id])
+  problemId      String
+  contest        Contest      @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  contestId      String
+  submissions    Submission[]
+  displayOrder   Int        
+
+  @@unique([contestId, problemId])
+}
+
+model ContestParticipation {
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  contest         Contest   @relation(fields: [contestId], references: [id], onDelete: Cascade)
+  contestId       String
+  score           Int       @default(0)
+  rank            Int?
+  startTime       DateTime?
+  
+  @@unique([userId, contestId])
+}
 
 enum STATUS {
   PENDING
   ACCEPTED
   REJECTED
 }
-
 
 enum Role {
   USER
@@ -131,4 +170,10 @@ enum TESTCASESTATUS {
   TLE
   MLE
   COMPILE_ERROR
+}
+
+enum ContestVisibility {
+  PUBLIC 
+  PRIVATE 
+  HIDDEN 
 }

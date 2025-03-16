@@ -79,11 +79,17 @@ type SubmissionStatus = "idle" | "PENDING" | "ACCEPTED" | "REJECTED";
 export default function CodeEditor({
   code,
   id,
-  userId
+  userId,
+  c_id,
+  isContest = false,
+  c_p_id
 }: {
   code: string | undefined;
   id: string;
   userId : string;
+  c_id? : string
+  isContest? : boolean
+  c_p_id? :string
 }) {
   const [submissionStatus, setSubmissionStatus] =
     useState<SubmissionStatus>("idle");
@@ -95,6 +101,7 @@ export default function CodeEditor({
   const [submission, setSubmission] = useState<submissionType | undefined>(
     undefined
   );
+  const [isContestSubmission,setIsContestSubmission] = useState(isContest)
   const { resolvedTheme}  = useTheme()
   const {  refreshKey } = useThemeRefresh()
 
@@ -152,6 +159,8 @@ export default function CodeEditor({
       code: currcode,
       problem_id: id,
       language_id: 63,
+      contest_id : c_id,
+      contest_problem_id : c_p_id
     });
     const currTestCases = await res.data.testCases;
     const currSubmission: submissionType = await res.data.submission;

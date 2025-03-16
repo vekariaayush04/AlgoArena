@@ -32,8 +32,8 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
         {status === "LoggedIn" && (
           <div className="flex gap-6 text-[#94A3B8] text-md font-semibold items-center">
             <Link href="/problems"> Problems</Link>
-            {/* <Link href="/contests"> Contests</Link>
-            <Link href="#"> LeaderBoard</Link> */}
+            <Link href="/contests"> Contests</Link>
+            {/* <Link href="#"> LeaderBoard</Link> */}
             {!loading && (
               <div className="bg-secondary rounded-full p-1">
                 <Link href="/profile" className="">

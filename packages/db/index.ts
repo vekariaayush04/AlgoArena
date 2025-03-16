@@ -10,7 +10,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClientSingleton | undefined;
 };
 
-export { Difficulty ,type Problem , STATUS , TESTCASESTATUS ,type Submission} from "@prisma/client";
+export { Difficulty ,type Problem , STATUS , TESTCASESTATUS ,type Submission , ContestVisibility } from "@prisma/client";
 export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 

@@ -67,9 +67,6 @@ app.put(
       // console.log(status === "ACCEPTED" ? "Accepted" : "Wrong Answer");
       let tTime = AllTestCases.reduce((a, t) => a + t.time!, 0);
       let tMemory = AllTestCases.reduce((a, t) => a + t.memory!, 0);
-      if(accepted){
-        
-      }
       const res = await prisma.submission.update({
         where: {
           id: testCase.submissionId,
@@ -80,6 +77,37 @@ app.put(
           memory: tMemory,
         },
       });
+
+      if(accepted){
+        const points = await prisma.contestProblem.findUnique({
+          where:{
+            contestId_problemId:{
+              contestId: res.contestId!,
+              problemId:res.problemId
+            }
+          },
+          select:{
+            points:true
+          }
+        })
+        console.log(points);
+        
+        const participation = await prisma.contestParticipation.update({
+          where:{
+            userId_contestId:{
+                  userId : res.userId,
+                  contestId : res.contestId!
+            }
+          },
+          data:{
+            score : {
+              increment : points?.points
+            }
+          }
+          
+        })
+        console.log(participation);
+      }
       //console.log(res);
     }
 

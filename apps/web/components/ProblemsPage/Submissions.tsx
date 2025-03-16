@@ -3,12 +3,13 @@ import { prisma } from "@repo/db/prisma";
 import { getCurrentSession } from "@/app/session";
 import { formatDistance, subDays } from "date-fns";
 
-const Submissions = async ({ p_id }: { p_id: string }) => {
+const Submissions = async ({ p_id , c_id }: { p_id: string , c_id? : string }) => {
   const { user } = await getCurrentSession();
   const submissions = await prisma.submission.findMany({
     where: {
       userId: user?.id,
       problemId: p_id,
+      contestId:c_id
     },
     orderBy : {
       updatedAt : "desc"
