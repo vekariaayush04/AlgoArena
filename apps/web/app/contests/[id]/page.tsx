@@ -86,12 +86,18 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           contest={c}
           registered={registered}
         ></ContestSmallBanner>
-        <ContestDetails totalProblems={problems.length} duration={c?.duration!} StartDate={c?.startDate!}></ContestDetails>
-       <div className="grid grid-cols-10">
-       <div className="col-span-7"><ContestProblemsDisplay
-          problems={problemsWithStatus}
-        ></ContestProblemsDisplay></div>
-       </div>
+        <ContestDetails
+          totalProblems={problems.length}
+          duration={c?.duration!}
+          StartDate={c?.startDate!}
+        ></ContestDetails>
+        <div className="grid grid-cols-10">
+          <div className="col-span-7">
+            <ContestProblemsDisplay
+              problems={problemsWithStatus}
+            ></ContestProblemsDisplay>
+          </div>
+        </div>
       </div>
     </div>
   );

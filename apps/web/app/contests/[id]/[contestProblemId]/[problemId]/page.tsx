@@ -1,16 +1,26 @@
+import { getCurrentSession } from "@/app/session";
 import NavBar from "@/components/NavBar";
 import CodeEditor from "@/components/ProblemsPage/Editor";
-import { prisma } from "@repo/db/prisma";
-import React from "react";
-import { getCurrentSession } from "@/app/session";
 import QuestionDescription from "@/components/QuestionDescription";
+import { prisma } from "@repo/db/prisma";
+import { redirect } from "next/navigation";
+import React from "react";
 
-const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+const page = async ({
+  params,
+}: {
+  params: Promise<{ id: string; contestProblemId: string ; problemId: string; }>;
+}) => {
   const { user } = await getCurrentSession();
+  if (user === undefined || user === null) {
+    redirect("/");
+  }
   const p = await params;
+  // console.log(p);
+
   const problem = await prisma.problem.findUnique({
     where: {
-      id: p.id,
+      id: p.problemId,
     },
     include: {
       defaultCode: true,
@@ -18,14 +28,15 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   });
   const length = await prisma.submission.count({
     where: {
-      problemId: p.id as string,
+      problemId: p.problemId as string,
+      contestId: p.id,
     },
   });
   const submissions = await prisma.submission.findMany({
     where: {
-      problemId: p.id as string,
+      problemId: p.problemId as string,
       status: "ACCEPTED",
-      userId : user?.id
+      contestId: p.id,
     },
     orderBy: {
       updatedAt: "desc",
@@ -47,15 +58,22 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         <div className=" bg-primary dark:bg-primary grid grid-cols-2 p-5 gap-20">
           <QuestionDescription
             isDone={isDone}
-            p_id={p.id}
+            p_id={p.problemId}
             problem={problem}
             submissions={length}
+            c_id={p.id}
           />
           <div className="h-96 col-span-1">
-            <CodeEditor code={code} id={p.id} userId={user!.id} />
+            <CodeEditor
+              code={code}
+              id={p.problemId}
+              userId={user!.id}
+              c_id={p.id}
+              isContest={true}
+              c_p_id={p.contestProblemId}
+            />
           </div>
         </div>
-        {/* <Footer/> */}
       </div>
     </>
   );

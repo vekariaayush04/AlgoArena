@@ -35,7 +35,7 @@ export default function ProblemsDisplay({problems} : {problems : ContestProblem[
             </TableHeader>
             <TableBody>
               {problems.map((problem) => (
-                <TableRow key={problem.id} className="hover:bg-primary border-y-2 cursor-pointer" onClick={()=>{ router.push(`/contests/${problem.problemId}/${problem.contestId}/${problem.id}}`)}}>
+                <TableRow key={problem.id} className="hover:bg-primary border-y-2 cursor-pointer" onClick={()=>{ router.push(`/contests/${problem.contestId}/${problem.id}/${problem.problemId}`)}}>
                   <TableCell className="font-medium text-content-secondary p-3 ">{problem.name}</TableCell>
                   <TableCell><Step data={`${problem.points} Pts`}></Step></TableCell>
                   <TableCell className="text-center">
