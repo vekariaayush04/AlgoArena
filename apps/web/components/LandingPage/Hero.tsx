@@ -2,7 +2,6 @@ import React from "react";
 import HeroImages from "./HeroImages";
 import { ArrowRight } from "lucide-react";
 import HowItWorks from "./HowItWorks";
-import { PrimaryButton } from "../Buttons/buttons";
 import { Button } from "../ui/button";
 
 const Hero = () => {
