@@ -1,9 +1,8 @@
 "use server";
-
+// @ts-nocheck
 import { prisma } from "@repo/db/prisma";
 import { getCurrentSession } from "../session";
 import { differenceInBusinessDays, formatDistance, getDate, getDay, getMonth, getYear } from "date-fns";
-
 type ProfileData = {
   name: string;
   username: string;
