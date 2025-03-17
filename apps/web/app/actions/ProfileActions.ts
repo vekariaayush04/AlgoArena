@@ -55,7 +55,7 @@ export async function getProblemSolvingData(): Promise<ProblemSolvingData> {
   ]);
 
   const easyDone = problemsSolved.reduce(
-    (a, p) => (p.problem.difficulty === "EASY" ? a + 1 : a),
+    (a:number, p) => (p.problem.difficulty === "EASY" ? a + 1 : a),
     0
   );
   const midDone = problemsSolved.reduce(
