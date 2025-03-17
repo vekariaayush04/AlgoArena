@@ -1,5 +1,5 @@
 "use server";
-// @ts-nocheck
+
 import { prisma } from "@repo/db/prisma";
 import { getCurrentSession } from "../session";
 import { differenceInBusinessDays, formatDistance, getDate, getDay, getMonth, getYear } from "date-fns";
@@ -52,15 +52,17 @@ export async function getProblemSolvingData(): Promise<ProblemSolvingData> {
     prisma.problem.count({ where: { difficulty: "MEDIUM" } }),
     prisma.problem.count({ where: { difficulty: "HARD" } }),
   ]);
-
+  // @ts-ignore
   const easyDone = problemsSolved.reduce(
-    (a:number, p) => (p.problem.difficulty === "EASY" ? a + 1 : a),
+    (a:number, p: any) => (p.problem.difficulty === "EASY" ? a + 1 : a),
     0
   );
+  // @ts-ignore
   const midDone = problemsSolved.reduce(
     (a, p) => (p.problem.difficulty === "MEDIUM" ? a + 1 : a),
     0
   );
+  // @ts-ignore
   const hardDone = problemsSolved.reduce(
     (a, p) => (p.problem.difficulty === "HARD" ? a + 1 : a),
     0
