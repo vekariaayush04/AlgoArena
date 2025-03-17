@@ -78,7 +78,7 @@ app.put(
         },
       });
 
-      if(accepted){
+      if(accepted && res.contestId){
         const points = await prisma.contestProblem.findUnique({
           where:{
             contestId_problemId:{
