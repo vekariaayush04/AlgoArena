@@ -5,10 +5,10 @@ import { prisma } from "@repo/db/prisma";
 export async function createContestAction(data : ContestFormData) {
     try {
         console.log(data);
-        const dateTimeString = `${data.startDate}T${data.startTime}:00`;
+        const dateTimeString = `${data.startDate}T${data.startTime}:00+05:30`;
         const dateObj = new Date(dateTimeString);
+
         const endDate = new Date(dateObj.getTime() + data.duration * 60000);
-        console.log(typeof data.duration);
         
         const contest = await prisma.contest.create({
             data:{
