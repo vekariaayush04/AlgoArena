@@ -13,7 +13,7 @@ const HeroImages = () => {
   
   if(isDark){
     return (
-      <div>
+      <div className='p-1'>
           <Image src={img} alt='' className=''/>
       </div>
     )

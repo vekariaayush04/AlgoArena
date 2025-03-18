@@ -74,7 +74,7 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
         <ThemeToggleButton></ThemeToggleButton>
         {status === "LoggedOut" && (
           <div className="flex gap-2">
-            <Button variant={"primary"} onClick={() => router.push("/login")}>
+            <Button variant={"primary"} onClick={() => router.push("/login")} className="hidden md:block">
               Login
             </Button>
             <Button variant={"blue"} onClick={() => router.push("/login")}>

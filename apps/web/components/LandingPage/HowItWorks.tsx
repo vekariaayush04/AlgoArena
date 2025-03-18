@@ -3,7 +3,7 @@ import StepBox from "./StepBox";
 
 const HowItWorks = () => {
   return (
-    <div className="h-screen bg-gradient-to-b from-[#F1F5F9] to-[#ffffff] dark:from-[#0F172A] dark:to-[#020817] rounded-t-md flex flex-col justify-center items-center">
+    <div className="md:py-28 py-20 bg-gradient-to-b from-[#F1F5F9] to-[#ffffff] dark:from-[#0F172A] dark:to-[#020817] rounded-t-md flex flex-col justify-center items-center">
       <div className="flex flex-col items-center justify-center gap-5">
         <div className="text-5xl text-content-primary font-semibold">
           How It <span className="text-[#4E7AFF]">Works</span>
@@ -16,7 +16,7 @@ const HowItWorks = () => {
           <div>progress on Algorithmic Arena.</div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-10 px-5 pt-8 max-w-5xl">
+      <div className="md:grid md:grid-cols-2 flex flex-col gap-10 px-5 pt-8 max-w-5xl">
         <StepBox
           num={1}
           desc="Create your account by signing up with your email, Google, or GitHub. If you're already a member, simply log in to access your profile and start coding right away."
