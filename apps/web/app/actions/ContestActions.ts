@@ -9,14 +9,14 @@ export async function registerUser(userId : string ,contestId : string) {
                 userId
             }
         })
-        console.log(registration);
+        // console.log(registration);
         
         return {
             sucess : true,
             message : `Registered for Contest`
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return {
             sucess : false,
             message : `Error Registering`
@@ -35,14 +35,14 @@ export async function unregisterUser(userId : string ,contestId : string) {
                 }
             }
         })
-        console.log(registration);
+        // console.log(registration);
         
         return {
             sucess : true,
             message : `UnRegistered Contest Successfully`
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return {
             sucess : false,
             message : `Error UnRegistering`

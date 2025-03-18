@@ -1,10 +1,13 @@
+"use client"
 import React from "react";
 import HeroImages from "./HeroImages";
 import { ArrowRight } from "lucide-react";
 import HowItWorks from "./HowItWorks";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
+  const router = useRouter()
   return (
     <div className="bg-primary dark:bg-primary">
       <div className="bg-primary dark:bg-primary h-full flex justify-center items-center pt-32 flex-col gap-5 pb-16">
@@ -18,8 +21,8 @@ const Hero = () => {
             Algorithmic Arena.
           </div>
           <div className="flex justify-center gap-6 mb-6">
-            <Button variant={"blue"}>Start Solving</Button>
-            <Button variant={"primary"}>
+            <Button variant={"blue"} onClick={() => router.push("/login")}>Start Solving</Button>
+            <Button variant={"primary"} onClick={() => router.push("/login")}>
               Explore new features{" "}
               <ArrowRight className="w-6 h-6 text-gray-500" />
             </Button>

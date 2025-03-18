@@ -99,7 +99,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
               onSubmit={async (e) => {
                 e.preventDefault();
                 const res = await registerUser(userId, contest?.id!);
-                console.log(res.message);
+                // console.log(res.message);
 
                 toast(res.message, { autoClose: 2500 });
                 setTimeout(() => {
@@ -123,7 +123,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
               onSubmit={async (e) => {
                 e.preventDefault();
                 const res = await unregisterUser(userId, contest?.id!);
-                console.log(res.message);
+                // console.log(res.message);
                 toast(res.message, { autoClose: 2500 });
                 setTimeout(() => {
                   router.refresh();
@@ -150,7 +150,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
               onSubmit={async (e) => {
                 e.preventDefault();
                 const res = await registerUser(userId, contest?.id!);
-                console.log(res.message);
+                // console.log(res.message);
 
                 toast(res.message, { autoClose: 2500 });
                 setTimeout(() => {

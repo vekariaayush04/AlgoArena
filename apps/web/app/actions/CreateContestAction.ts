@@ -4,7 +4,7 @@ import { prisma } from "@repo/db/prisma";
 
 export async function createContestAction(data : ContestFormData) {
     try {
-        console.log(data);
+        // console.log(data);
         const dateTimeString = `${data.startDate}T${data.startTime}:00+05:30`;
         const dateObj = new Date(dateTimeString);
 
@@ -30,15 +30,15 @@ export async function createContestAction(data : ContestFormData) {
             })
             return p
         }))
-        console.log(contest);
-        console.log(problems);
+        // console.log(contest);
+        // console.log(problems);
         
         return {
             success : true,
             message : "Contest Created Successfully"
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         
         return {
             success : false,

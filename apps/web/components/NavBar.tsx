@@ -8,6 +8,15 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/app/useUser";
 import Link from "next/link";
 import ThemeToggleButton from "@/app/ThemeSwitcher";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { logout } from "@/app/logout/actions";
 
 const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
   const router = useRouter();
@@ -18,7 +27,7 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
     if (user !== undefined && user !== null) {
       setLoading(false);
     }
-  },[loading,user])
+  }, [loading, user]);
   return (
     <div className="sticky top-0 left-0 right-0 flex justify-between bg-primary dark:bg-primary text-gray-200 border-b border-border dark:border-border p-2 z-10">
       <div className="flex pl-4 gap-3 items-center justify-center">
@@ -35,11 +44,29 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
             <Link href="/contests"> Contests</Link>
             {/* <Link href="#"> LeaderBoard</Link> */}
             {!loading && (
-              <div className="bg-secondary rounded-full p-1">
-                <Link href="/profile" className="">
-                  {" "}
-                  <Image src={user?.image!} alt="" width={35} height={35} className="rounded-full border-2"></Image>
-                </Link>
+              <div >
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="bg-secondary rounded-full p-1">
+                    {" "}
+                    <Image
+                      src={user?.image!}
+                      alt=""
+                      width={35}
+                      height={35}
+                      className="rounded-full border-2"
+                    ></Image>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={()=>{router.push("/profile")}}>Profile</DropdownMenuItem>
+                    <DropdownMenuItem onClick={async () => {
+                        await logout()
+                    }}>logout</DropdownMenuItem>
+                    {/* <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>Subscription</DropdownMenuItem> */}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </div>
@@ -50,8 +77,8 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
             <Button variant={"primary"} onClick={() => router.push("/login")}>
               Login
             </Button>
-            <Button variant={"blue"} onClick={() => router.push("/signup")}>
-              Sign up now
+            <Button variant={"blue"} onClick={() => router.push("/login")}>
+              Join now
             </Button>
           </div>
         )}

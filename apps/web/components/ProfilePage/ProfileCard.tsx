@@ -42,7 +42,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           {languages.map((lang, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-[#1A2234] text-gray-400 text-xs rounded-md"
+              className="px-3 py-1 text-content-secondary border-2 bg-primary text-xs rounded-md"
             >
               {lang}
             </span>

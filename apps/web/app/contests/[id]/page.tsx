@@ -46,7 +46,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const problemSubmissions = submissions.filter(
       (sub) => sub.problemId === problem.problem.id
     );
-    console.log(problemSubmissions);
+    // console.log(problemSubmissions);
 
     let status: "completed" | "attempted" | "not-started" = "not-started";
 

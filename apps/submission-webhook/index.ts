@@ -90,7 +90,7 @@ app.put(
             points:true
           }
         })
-        console.log(points);
+        // console.log(points);
         
         const participation = await prisma.contestParticipation.update({
           where:{
@@ -106,7 +106,7 @@ app.put(
           }
           
         })
-        console.log(participation);
+        // console.log(participation);
       }
       //console.log(res);
     }

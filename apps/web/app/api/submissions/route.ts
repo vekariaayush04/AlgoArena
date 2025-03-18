@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Problem not found" }, { status: 404 });
     }
 
-    // Get full code with inputs and outputs (code enrichment)
+    
     const { fullCode, inputs, outputs } = await getProblem(
       problem.slug,
       code as string
@@ -49,7 +49,6 @@ export async function POST(req: NextRequest) {
 
     const response = await axios.request(options);
 
-    // Initialize submission data with required fields
     const submissionData: any = {
       problemId: problem_id as string,
       languageId: language_id as number,
@@ -65,6 +64,7 @@ export async function POST(req: NextRequest) {
       const contest = await prisma.contest.findUnique({
         where: { id: contest_id }
       });
+
       contestExists = contest !== null;
       
       if (contestExists) {
@@ -82,19 +82,16 @@ export async function POST(req: NextRequest) {
           });
           
           if (contestProblem) {
-            // Found the actual ContestProblem record
             submissionData.contestProblemId = contestProblem.id;
-            console.log("Found contestProblem:", contestProblem.id);
+            // console.log("Found contestProblem:", contestProblem.id);
           } else {
-            console.log("No contestProblem found for contestId:", contest_id, "problemId:", problem_id);
+            // console.log("No contestProblem found for contestId:", contest_id, "problemId:", problem_id);
           }
         }
       }
     }
 
-    console.log("Final submission data:", submissionData);
 
-    // Create the submission with validated data
     const submission: submissionType = await prisma.submission.create({
       data: submissionData
     });
