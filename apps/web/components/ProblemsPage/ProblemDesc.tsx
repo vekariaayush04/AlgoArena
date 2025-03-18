@@ -36,7 +36,7 @@ export const ProblemComponent: React.FC<{ problem: any; isDone: boolean , submis
           {problem.title}
         </h1>
         {/* <span className='absolute right-5 top-6'> */}
-        <div className="flex gap-4 items-center">
+        <div className="md:flex gap-4 items-center hidden">
           {isDone && (
             <CircleCheckBig className="text-green-600"></CircleCheckBig>
           )}

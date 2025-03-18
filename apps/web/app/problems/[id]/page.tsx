@@ -44,7 +44,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     <>
       <div className="h-screen bg-primary dark:bg-primary">
         <NavBar status="LoggedIn" />
-        <div className=" bg-primary dark:bg-primary grid grid-cols-2 p-5 gap-20">
+        <div className=" bg-primary dark:bg-primary md:grid md:grid-cols-2 p-5 gap-20 flex flex-col gap-10">
           <QuestionDescription
             isDone={isDone}
             p_id={p.id}

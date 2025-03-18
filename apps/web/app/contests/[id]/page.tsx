@@ -82,7 +82,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="">
       <NavBar status="LoggedIn" />
-      <div className="flex flex-col px-24 py-10 gap-5">
+      <div className="flex flex-col md:px-24 px-8 py-10 gap-5">
         <ContestSmallBanner
           contest={c}
           registered={registered}
@@ -92,7 +92,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           duration={c?.duration!}
           StartDate={c?.startDate!}
         ></ContestDetails>
-        <div className="grid grid-cols-10">
+        <div className="md:grid md:grid-cols-10">
           <div className="col-span-7">
             <ContestProblemsDisplay
               problems={problemsWithStatus}

@@ -8,10 +8,10 @@ type ContestDetailsProps = {
 }
 const ContestDetails : React.FC<ContestDetailsProps> = ({totalProblems , StartDate , duration}) => {
   return (
-    <div className='flex flex-col gap-2 pl-1'>
+    <div className='flex flex-col md:gap-2 pl-1 gap-5 pt-5 md:pt-2'>
         <div className='text-2xl font-semibold'>Contest Details</div>
         <div className='text-content-secondary'>Join the Weekly Code Clash to test your coding skills against challenging problems designed to push your limits. Compete individually, solve a variety of algorithmic challenges, and aim for the top spot on the leaderboard</div>
-        <div className='grid grid-cols-5 gap-6'>
+        <div className='md:grid md:grid-cols-5 flex flex-col gap-6 pt-2'>
             <div className='col-span-1 flex justify-center items-center flex-col bg-secondary py-14 rounded-lg px-8 gap-3'>
                 <div className='text-content-primary text-xl'>Total Problems</div>
                 <div className='text-content-secondary'>{`${totalProblems} problems`}</div>

@@ -40,8 +40,8 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
       <div className=" gap-6 flex justify-center items-center">
         {status === "LoggedIn" && (
           <div className="flex gap-6 text-[#94A3B8] text-md font-semibold items-center">
-            <Link href="/problems"> Problems</Link>
-            <Link href="/contests"> Contests</Link>
+            <div className="hidden  md:flex md:gap-6"><Link href="/problems"> Problems</Link>
+            <Link href="/contests"> Contests</Link></div>
             {/* <Link href="#"> LeaderBoard</Link> */}
             {!loading && (
               <div >
@@ -63,8 +63,10 @@ const NavBar = ({ status }: { status: "LoggedIn" | "LoggedOut" }) => {
                     <DropdownMenuItem onClick={async () => {
                         await logout()
                     }}>logout</DropdownMenuItem>
-                    {/* <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuItem>Subscription</DropdownMenuItem> */}
+                    <div className="md:hidden block">
+                    <DropdownMenuItem onClick={()=>{router.push("/problems")}}>Problems</DropdownMenuItem>
+                    <DropdownMenuItem onClick={()=>{router.push("/contests")}}>Contests</DropdownMenuItem>
+                    </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

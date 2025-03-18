@@ -45,7 +45,7 @@ export default function ProblemsDisplay({
 
   return (
     <div className="pt-4">
-      <div className="max-w-4xl">
+      <div className="md:max-w-4xl">
         <div className="rounded-md border-2 border-border overflow-hidden">
           <Table className="border-collapse">
             <TableHeader className="bg-secondary">

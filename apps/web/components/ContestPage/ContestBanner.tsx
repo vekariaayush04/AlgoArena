@@ -213,7 +213,7 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
 
 
       </div>
-      <div className="pt-10 pr-16">
+      <div className="pt-10 pr-16 md:block hidden">
         {resolvedTheme === "dark" ? <Image src={img} alt=""></Image> : <Image src={lightImg} alt=""></Image>}
       </div>
     </div>

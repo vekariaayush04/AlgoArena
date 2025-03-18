@@ -48,7 +48,7 @@ const page = async () => {
   return (
     <div>
       <NavBar status={user === undefined ? "LoggedOut" : "LoggedIn"} />
-      <div className="flex flex-col gap-5 px-20 py-8">
+      <div className="flex flex-col gap-5 md:px-20 px-8 py-8">
         <div className="flex flex-col gap-2">
           <div className="text-content-primary text-4xl font-semibold">
             Contests
