@@ -1,17 +1,8 @@
 "use client";
-import { Status } from "./ContestTimer";
 import { format } from "date-fns";
 import Image from "next/image";
 import img from "@/public/Featured Card Image.svg";
 import lightImg from "@/public/lightBgBanner.svg"
-import { useRouter } from "next/navigation";
-import {
-  differenceInDays,
-  differenceInHours,
-  differenceInMinutes,
-  differenceInSeconds,
-  isFuture,
-} from "date-fns";
 import React, { useEffect, useState } from "react";
 import { Contest } from "./ContestBanner";
 import { Step } from "../LandingPage/StepBox";
@@ -26,44 +17,23 @@ const ContestSmallBanner: React.FC<ContestSmallBannerProps> = ({
   contest,
   registered,
 }) => {
-  const [status, setStatus] = useState<Status>(null);
-  const [d, setD] = useState(0);
-  const [h, setH] = useState(0);
-  const [m, setM] = useState(0);
-  const [s, setS] = useState(0);
-  const router = useRouter();
+  const [status, setStatus] = useState<"completetd" | "not-completed" | null>(null);
   const { resolvedTheme} = useTheme()
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isFuture(contest?.startDate!)) {
-        setStatus("Not-Started");
-        let d1 = new Date();
-        setD(differenceInDays(contest?.startDate!, d1));
-        setH(differenceInHours(contest?.startDate!, d1) % 24);
-        setM(differenceInMinutes(contest?.startDate!, d1) % 60);
-        setS(differenceInSeconds(contest?.startDate!, d1) % 60);
-      } else if (isFuture(contest?.endDate!)) {
-        setStatus("Started");
-        let d1 = new Date();
-        setD(differenceInDays(contest?.endDate!, d1));
-        setH(differenceInHours(contest?.endDate!, d1) % 24);
-        setM(differenceInMinutes(contest?.endDate!, d1) % 60);
-        setS(differenceInSeconds(contest?.endDate!, d1) % 60);
-      } else {
-        setStatus("Completed");
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [status]);
+    if(Date.now() < new Date(contest?.endDate!).getTime()){
+      setStatus("not-completed")
+    }else{
+      setStatus("completetd")
+    }
+  }, []);
 
   return (
     <div className="flex justify-between bg-gradient-to-b from-[#F1F5F9] to-[#ffffff] dark:from-[#0F172A] dark:to-[#020817] rounded-md px-5 pt-5">
       <div className="flex flex-col gap-5">
         <div className="text-2xl font-semibold pl-1">{contest?.name}</div>
         <div className="pl-1">
-          {status === "Started" && (<Step variant="EASY">Active</Step>)}
+          {(status === "completetd" ? <Step variant="HARD">Ended</Step> : <Step variant="EASY">Active</Step>)}
         </div>
         <div className="text-content-secondary pl-1">
           {format(contest?.startDate!, "dd MMMM, yyyy, h:mm a (zzz)")}

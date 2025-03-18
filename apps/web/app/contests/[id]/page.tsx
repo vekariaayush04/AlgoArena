@@ -74,7 +74,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     },
   });
 
-  if (!isRegistered) {
+  
+  if (!isRegistered && (Date.now() < new Date(c?.endDate!).getTime())) {
     redirect("/contests");
   }
 
@@ -95,6 +96,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="col-span-7">
             <ContestProblemsDisplay
               problems={problemsWithStatus}
+              toDisplay={Date.now() < new Date(c?.endDate!).getTime()}
             ></ContestProblemsDisplay>
           </div>
         </div>

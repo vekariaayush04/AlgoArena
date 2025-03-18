@@ -1,0 +1,10 @@
+{
+    "problemName": "second-max-element",
+    "functionName": "SecondMaxElement",
+    "inputStructure": [
+        {"name": "arr", "type": "int[]"}
+    ],
+    "outputStructure": [
+        {"name": "ans", "type": "int"}
+    ]
+}

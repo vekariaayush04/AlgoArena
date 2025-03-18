@@ -1,0 +1,11 @@
+{
+    "problemName": "search-element",
+    "functionName": "SearchElement",
+    "inputStructure": [
+      {"name": "nums", "type": "int[]"},
+      {"name": "target", "type": "int"}
+    ],
+    "outputStructure": [
+      {"name": "ans", "type": "boolean"}
+    ]
+  }

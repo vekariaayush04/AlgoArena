@@ -2,7 +2,7 @@
 import { CircleCheckBig } from "lucide-react";
 import { useEffect, useState } from "react";
 import Editor, { Monaco } from "@monaco-editor/react";
-import { Check, ChevronDown, Loader2, Play, X } from "lucide-react";
+import { ChevronDown, Loader2, Play, X } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { submissionType, testCaseType } from "@/app/api/submissions/route";

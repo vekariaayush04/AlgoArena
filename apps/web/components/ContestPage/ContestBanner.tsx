@@ -191,7 +191,24 @@ const ContestBanner: React.FC<ContestBannerProps> = ({
         </div>)}
 
         {status === "Completed" && (<div className="pl-2">
-            <Button variant={"blue"}>View Details</Button>
+          <form
+              action=""
+              onSubmit={async (e) => {
+                e.preventDefault();
+                router.push(`/contests/${contest?.id}`)
+              }}
+            >
+              <Button
+                variant={"blue"}
+                type="submit"
+                className=""
+
+              >
+                View Details
+              </Button>
+
+              <ToastContainer />
+            </form>
         </div>)}
 
 
